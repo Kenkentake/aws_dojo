@@ -82,13 +82,13 @@ class EcsClusterQaBot(Stack):
         )
         ssm.StringParameter(
             self, "ECS_TASK_VPC_SUBNET_1",
-            parameter_name="ECS_TASK_VPC_SUBNET_1"
+            parameter_name="ECS_TASK_VPC_SUBNET_1",
             string_value=vpc.public_subnets[0].subnet_id
         )
         ssm.StringParameter(
             self, "CONTAINER_NAME",
             parameter_name="CONTAINER_NAME",
-            string_value=container_name
+            string_value=container.container_name
         )
         ssm.StringParameter(
             self, "TABLE_NAME",
