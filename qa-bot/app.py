@@ -92,6 +92,7 @@ class EcsClusterQaBot(Stack):
         )
         ssm.StringParameter(
             self, "TABLE_NAME",
+            parameter_name="TABLE_NAME",
             string_value=table.table_name
         )
 
