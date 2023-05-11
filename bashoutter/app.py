@@ -71,7 +71,7 @@ class Bashoutter(Stack):
         )
 
         # grant permission to access dynamoDB table
-        table.grand_read_data(get_haiku_lambda)
+        table.grant_read_data(get_haiku_lambda)
         table.grant_read_write_data(post_haiku_lambda)
         table.grant_read_write_data(patch_haiku_lambda)
         table.grant_read_write_data(delete_haiku_lambda)
