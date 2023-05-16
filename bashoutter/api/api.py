@@ -31,7 +31,7 @@ def get_haiku(event, context):
     return {
         "statusCode": status_code,
         "headers": HEADERS,
-        "body": json.dumps(resp, cls=DecimalEnvoder)
+        "body": json.dumps(resp, cls=DecimalEncoder)
     }
 
 def post_haiku(event, context):
@@ -64,7 +64,7 @@ def post_haiku(event, context):
     except ValueError as e:
         status_code = 400
         resp = {"description": f"Bad request. {str(e)}"}
-    except Exception as e
+    except Exception as e:
         status_code = 500
         resp = {"description": str(e)} 
     return {
@@ -92,10 +92,10 @@ def patch_haiku(event, context):
         )
         
         status_code = 200
-        resp = {"desctiption": "OK"}
+        resp = {"description": "OK"}
     except ValueError as e:
         status_code = 400
-        resp = {"desctiption": f"Bad request. {str(e)}"}
+        resp = {"description": f"Bad request. {str(e)}"}
     except Exception as e:
         status_code = 500
         resp = {"description": str(e)}
