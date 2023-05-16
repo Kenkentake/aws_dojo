@@ -11,11 +11,12 @@ from aws_cdk import (
 )
 import os
 
-
 class Bashoutter(Stack):
+
     def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
 
+        # <1>
         # dynamoDB table to store haiku
         table = ddb.Table(
             self, "Bashoutter-Table",
@@ -27,11 +28,13 @@ class Bashoutter(Stack):
             removal_policy=cdk.RemovalPolicy.DESTROY
         )
 
+        # <2>
         bucket = s3.Bucket(
             self, "Bashoutter-Bucket",
             website_index_document="index.html",
             public_read_access=True,
             auto_delete_objects=True,
+            block_public_access=s3.BlockPublicAccess.BLOCK_ACLS,
             removal_policy=cdk.RemovalPolicy.DESTROY
         )
 
@@ -42,6 +45,7 @@ class Bashoutter(Stack):
             }
         }
 
+        # <3>
         # define Lambda functions
         get_haiku_lambda = _lambda.Function(
             self, "GetHaiku",
@@ -49,33 +53,35 @@ class Bashoutter(Stack):
             handler="api.get_haiku",
             memory_size=512,
             timeout=cdk.Duration.seconds(10),
-            **common_params
+            **common_params,
         )
         post_haiku_lambda = _lambda.Function(
             self, "PostHaiku",
             code=_lambda.Code.from_asset("api"),
             handler="api.post_haiku",
-            **common_params
+            **common_params,
         )
         patch_haiku_lambda = _lambda.Function(
             self, "PatchHaiku",
             code=_lambda.Code.from_asset("api"),
             handler="api.patch_haiku",
-            **common_params
+            **common_params,
         )
         delete_haiku_lambda = _lambda.Function(
             self, "DeleteHaiku",
             code=_lambda.Code.from_asset("api"),
             handler="api.delete_haiku",
-            **common_params
+            **common_params,
         )
 
-        # grant permission to access dynamoDB table
+        # <4>
+        # grant permissions
         table.grant_read_data(get_haiku_lambda)
         table.grant_read_write_data(post_haiku_lambda)
         table.grant_read_write_data(patch_haiku_lambda)
         table.grant_read_write_data(delete_haiku_lambda)
 
+        # <5>
         # define API Gateway
         api = apigw.RestApi(
             self, "BashoutterApi",
@@ -118,14 +124,14 @@ class Bashoutter(Stack):
         )
 
         # Output parameters
-        cdk.CfnOutput(self, "BucketUrl", value=bucket.bucket_website_domain_name)
+        cdk.CfnOutput(self, 'BucketUrl', value=bucket.bucket_website_domain_name)
 
 app = cdk.App()
 Bashoutter(
     app, "Bashoutter",
     env={
         "region": os.environ["CDK_DEFAULT_REGION"],
-        "account": os.environ["CDK_DEFAULT_ACCOUNT"]
+        "account": os.environ["CDK_DEFAULT_ACCOUNT"],
     }
 )
 
