@@ -85,10 +85,10 @@ def patch_haiku(event, context):
 
         response = table.update_item(
             Key={"item_id": item_id},
-            UpdateExpression=f"SET likes = likes + :inc"
+            UpdateExpression=f"SET likes = likes + :inc",
             ExpressionAttributeValues={
                 ":inc": 1
-                }
+            }
         )
         
         status_code = 200
