@@ -60,13 +60,13 @@ def post_haiku(event, context):
         response = table.put_item(Item=item)
 
         status_code = 201
-        resp = {"description"}
+        resp = {"description": "Successfully added a new haiku"}
     except ValueError as e:
         status_code = 400
         resp = {"description": f"Bad request. {str(e)}"}
     except Exception as e:
         status_code = 500
-        resp = {"description": str(e)} 
+        resp = {"description": str(e)}
     return {
         "statusCode": status_code,
         "headers": HEADERS,
