@@ -5,7 +5,7 @@ import requests
 def post_haiku(p):
     endpoint_url = p[0]
     if endpoint_url.endswith("/"):
-        endpoint_url = undpoint_url[:-1]
+        endpoint_url = endpoint_url[:-1]
     print("", end=".", flush=True)
     resp = requests.post(
         endpoint_url + "/haiku",
@@ -27,7 +27,7 @@ def delete_haiku(p):
 
 def post_many_haiku(endpoint_url, num):
     with Pool(cpu_count()) as pool:
-        params = [(endpoint_url, i) for in range(num)]
+        params = [(endpoint_url, i) for i in range(num)]
         pool.map(post_haiku, params)
     print(f"\n Sent POST /haiku requests {num} times.")
 

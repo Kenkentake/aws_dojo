@@ -78,19 +78,19 @@ def patch_haiku(event, context):
     handler for PATCH /haiku/{item_id}
     """
     try:
-        patch_params = event.get("patchParameters", {})
-        item_id = patch_params.get("item_id", "")
+        path_params = event.get("pathParameters", {})
+        item_id = path_params.get("item_id", "")
         if not item_id:
-            raise ValueError
+            raise ValueError("Invalid request. The path parameter 'item_id' is missing")
 
         response = table.update_item(
             Key={"item_id": item_id},
             UpdateExpression=f"SET likes = likes + :inc",
             ExpressionAttributeValues={
-                ":inc": 1
+                ":inc": 1,
             }
         )
-        
+
         status_code = 200
         resp = {"description": "OK"}
     except ValueError as e:
