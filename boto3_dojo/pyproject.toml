@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "boto3_dojo"
+version = "0.1.0"
+description = ""
+authors = ["Kenkentake <keeeentake0908@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+aws-cdk-lib = "2.70.0"
+constructs = "^10.0.0,<11.0.0"
+boto3 = "^1.18.0"
+
+[tool.poetry.group.dev.dependencies]
+black = "^23.1.0"
+isort = "^5.12.0"
+flake8 = "^6.0.0"
+requests = "^2.26.0"
+httpie = "^2.4.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
